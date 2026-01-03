@@ -4,12 +4,13 @@ from django.contrib import messages as django_messages
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Project, Message
+from .models import Project, Message, BlogPost
 from .utils import is_valid_email_format, email_exists
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    all_blog_posts = BlogPost.objects.all()
+    return render(request, 'home.html', {'blog_posts': all_blog_posts})
 
 def projects(request):
     all_projects = Project.objects.all()
