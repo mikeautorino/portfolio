@@ -1,0 +1,1 @@
+This is my latest protfolio website I'm working on.  Currently, it utilizes Django and PostgresSQL (locally at the moment) for the backend server.  HTML and Bootstrap CSS are used for the front end. Planning on using a JS library like React or Svelt for the frontend soon.
