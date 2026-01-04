@@ -119,7 +119,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+# URL to use when referring to static files located in `STATICFILES_DIRS`.
+STATIC_URL = '/static/'
+
+# Directory where `collectstatic` will collect static files for deployment.
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -129,3 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Whether to perform MX/SMTP existence checks for submitted email addresses.
 # Disabled by default because SMTP probing is unreliable and can cause network errors.
 CHECK_EMAIL_EXISTENCE = False
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
