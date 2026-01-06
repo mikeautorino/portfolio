@@ -44,11 +44,11 @@ p {
     border-radius: 10px 10px 0 0;
 }
 
-.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.6rem 1rem;border-radius:10px;border:1px solid transparent;font-weight:600;transition:transform .18s var(--ease),box-shadow .18s var(--ease);background:transparent;color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.6rem 1rem;border-radius:10px;border:1px solid transparent;font-weight:600;background:transparent;color:var(--text)}
 .btn:focus{outline:3px solid rgba(255,255,255,0.06);outline-offset:3px}
-.btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#061018;box-shadow:0 8px 22px rgba(255,107,107,.12);border-color:transparent}
+.btn-primary{background:var(--accent-2);color:#061018;border-color:transparent}
 .btn-ghost{background:transparent;border-color:rgba(255,255,255,0.06);color:var(--text)}
-.btn:hover{transform:translateY(-4px)}
+
 
 /* Hero styles */
 .hero{padding:5.5rem 0}
@@ -85,7 +85,6 @@ p {
 @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:640px){.grid{grid-template-columns:1fr}}
 .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .18s var(--ease)}
-.card:hover{transform:translateY(-6px)}
 .card-body{padding:1rem}
 .muted{color:var(--muted);font-size:.95rem}
 
@@ -98,3 +97,27 @@ p {
 input,textarea{width:100%;padding:.65rem;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text);margin-bottom:.75rem}
 label{display:block;margin-bottom:.25rem;color:var(--muted)}
 .contact-form{max-width:680px}
+
+/* Blog Post Card Styles */
+.blog-post-card{display:block;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);padding:1.5rem;margin-bottom:var(--gap);cursor:pointer;text-decoration:none;color:inherit}
+.blog-post-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(2,6,23,0.8)}
+.blog-post-card h2{margin:0 0 0.5rem;font-size:1.5rem;color:var(--text)}
+.blog-post-card .blog-post-date{color:var(--muted);font-size:0.9rem;margin-bottom:1rem;display:block}
+.blog-post-content{position:relative;height:120px;overflow:hidden;margin-bottom:1rem}
+.blog-post-content p{margin:0;color:var(--text);line-height:1.6}
+.blog-post-fade{position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none}
+.blog-post-readmore{color:var(--accent-2);font-weight:600;font-size:0.95rem}
+
+/* Footer styles */
+.footer{margin-top:5rem;padding:2rem 0;border-top:1px solid rgba(255,255,255,0.06);background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);text-align:center;max-height:15vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.footer p{color:var(--muted);margin:0;font-size:0.9rem}
+
+/* Social Media Styles */
+.social-media-section{margin-top:3rem;padding:2rem 0}
+.social-media-section h2{font-size:1.5rem;margin-bottom:1.5rem;color:var(--text)}
+.social-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.social-link{display:inline-flex;align-items:center;gap:0.6rem;padding:0.75rem 1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);color:var(--text);text-decoration:none;font-weight:600;transition:all .2s var(--ease)}
+.social-link:hover{border-color:rgba(255,255,255,0.12);background:linear-gradient(180deg,rgba(255,255,255,0.04),transparent);transform:translateY(-2px)}
+.social-link svg{width:24px;height:24px;display:block}
+.social-link.linkedin:hover{color:var(--accent-2)}
+.social-link.github:hover{color:var(--accent)}

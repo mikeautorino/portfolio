@@ -8,4 +8,5 @@ urlpatterns = [
     path('contact/submit/', views.submit_message, name='submit_message'),
     path('contact/success/', views.message_success, name='message_success'),
     path('about/', views.about, name='about'),
+    path('blog/<int:post_id>/', views.blog_post, name='blog_post'),
 ]

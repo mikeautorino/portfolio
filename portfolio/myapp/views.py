@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.contrib import messages as django_messages
 from django.core.cache import cache
@@ -102,3 +102,8 @@ def about(request):
 
 def message_success(request):
     return render(request, 'message_success.html')
+
+
+def blog_post(request, post_id):
+    post = get_object_or_404(BlogPost, id=post_id)
+    return render(request, 'blog_post.html', {'post': post})

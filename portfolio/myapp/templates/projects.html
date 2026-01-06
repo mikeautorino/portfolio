@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-  <section class="container">
-    <h1>Projects</h1>
-    <p>Here are projects that I have worked on. You can find more information about each project below.</p>
-    <div class="grid">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <h1 class="hero-title">Projects</h1>
+          <p class="hero-sub">Here are projects that I have worked on. You can find more information about each project below.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="projects-section">
+     <div class="grid">
       {% for project in projects %}
       <article class="card">
         <a href="{{ project.link }}">

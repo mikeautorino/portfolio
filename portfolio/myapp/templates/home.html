@@ -1,18 +1,38 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 
-  <img src="https://placehold.co/600x400" alt="Profile Picture" class="rounded-circle mb-4" width="100%" height="400px">
-  <h1>Welcome to my Portfolio!</h1>
-  <p>You can find information about my projects and experience throughout this site.</p>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <h1 class="hero-title">Welcome to my Portfolio!</h1>
+          <p class="hero-sub">You can find information about my projects and experience throughout this site.</p>
+          <div class="hero-cta">
+            <a href="{% url 'projects' %}" class="btn btn-primary">View Projects</a>
+            <a href="{% url 'contact' %}" class="btn btn-ghost">Get In Touch</a>
+          </div>
+        </div>
+        <div class="hero-media">
+          <img src="{% static 'images/me.jpeg' %}" alt="Profile Picture" class="avatar">
+        </div>
+      </div>
+    </div>
+  </section>
+
   <h2>Blog</h2>
-  <ul>
+  <div class="blog-posts-container">
     {% for post in blog_posts %}
-      <li class="mb-4" style="list-style-type: none;">
+      <a href="{% url 'blog_post' post.id %}" class="blog-post-card">
         <h2>{{ post.title }}</h2>
-        <h3>Published on {{ post.published_at }}</h3>
-        <p>{{ post.body|linebreaks }}</p>
-      </li>
+        <span class="blog-post-date">Published on {{ post.published_at|date:"F j, Y" }}</span>
+        <div class="blog-post-content">
+          <p>{{ post.body|truncatewords:60 }}</p>
+          <div class="blog-post-fade"></div>
+        </div>
+        <span class="blog-post-readmore">Read more →</span>
+      </a>
     {% endfor %}
-  </ul>
+  </div>
   
 {% endblock %}

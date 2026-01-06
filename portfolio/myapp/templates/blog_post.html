@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <br>
+  <a href="{% url 'home' %}" class="btn btn-ghost" style="margin-bottom: 2rem;">
+    ← Go Back
+  </a>
+
+  <article class="blog-post-full">
+    <h1>{{ post.title }}</h1>
+    <p class="blog-post-date">Published on {{ post.published_at|date:"F j, Y" }}</p>
+    
+    <div class="blog-post-body">
+      {{ post.body|linebreaks }}
+    </div>
+  </article>
+</div>
+
+{% endblock %}
