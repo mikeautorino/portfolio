@@ -99,7 +99,7 @@ label{display:block;margin-bottom:.25rem;color:var(--muted)}
 .contact-form{max-width:680px}
 
 /* Blog Post Card Styles */
-.blog-post-card{display:block;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);padding:1.5rem;margin-bottom:var(--gap);cursor:pointer;text-decoration:none;color:inherit}
+.blog-post-card{display:block;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);padding:1.5rem;margin-bottom:var(--gap);cursor:pointer;text-decoration:none;color:inherit;transition:transform .18s var(--ease),box-shadow .18s var(--ease)}
 .blog-post-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(2,6,23,0.8)}
 .blog-post-card h2{margin:0 0 0.5rem;font-size:1.5rem;color:var(--text)}
 .blog-post-card .blog-post-date{color:var(--muted);font-size:0.9rem;margin-bottom:1rem;display:block}
@@ -121,3 +121,10 @@ label{display:block;margin-bottom:.25rem;color:var(--muted)}
 .social-link svg{width:24px;height:24px;display:block}
 .social-link.linkedin:hover{color:var(--accent-2)}
 .social-link.github:hover{color:var(--accent)}
+
+/* Scroll reveal animation utilities */
+.reveal{opacity:0;transform:translateY(12px)}
+.reveal.in-view{opacity:1;transform:translateY(0);transition:opacity 0.6s var(--ease) 0.1s, transform 0.6s var(--ease) 0.1s}
+
+/* small interactive focus indicator for links */
+.nav-link:focus,.btn:focus{box-shadow:0 6px 18px rgba(6,16,32,0.25);transform:translateY(-2px)}

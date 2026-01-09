@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-  <section class="hero">
+  <section class="hero reveal">
     <div class="container">
       <div class="hero-inner">
         <div class="hero-copy">
@@ -20,10 +20,11 @@
     </div>
   </section>
 
-  <h2>Blog</h2>
-  <div class="blog-posts-container">
+  
+  <div class="blog-posts-container reveal">
+    <h2>Blog</h2>
     {% for post in blog_posts %}
-      <a href="{% url 'blog_post' post.id %}" class="blog-post-card">
+      <a href="{% url 'blog_post' post.id %}" class="blog-post-card reveal">
         <h2>{{ post.title }}</h2>
         <span class="blog-post-date">Published on {{ post.published_at|date:"F j, Y" }}</span>
         <div class="blog-post-content">

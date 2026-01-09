@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <section class="hero">
+  <section class="hero reveal">
     <div class="container">
       <div class="hero-inner">
         <div class="hero-copy">
@@ -15,7 +15,7 @@
       <div class="alert alert-info">{{ message }}</div>
     {% endfor %}
   {% endif %}
-  <form method="post" action="{% url 'submit_message' %}">
+  <form method="post" action="{% url 'submit_message' %}" class="reveal">
     {% csrf_token %}
     <div class="form-group">
       <label for="name">Name:</label>
