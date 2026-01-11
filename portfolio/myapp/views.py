@@ -5,7 +5,7 @@ from django.core.cache import cache
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Project, Message, BlogPost
-from .utils import is_valid_email_format, email_exists
+from .utils import is_valid_email_format
 
 # Create your views here.
 def home(request):
@@ -57,16 +57,6 @@ def submit_message(request):
     if not is_valid_email_format(email):
         django_messages.error(request, 'Please provide a valid email address.')
         return redirect('contact')
-
-    # Verify email existence via MX/SMTP check — optional and off by default
-    if getattr(settings, 'CHECK_EMAIL_EXISTENCE', False):
-        exists = email_exists(email)
-        if not exists:
-            django_messages.error(request, 'The email address does not appear to exist. Please check and try again.')
-            return redirect('contact')
-    else:
-        # existence check skipped
-        exists = None
 
     # Create the message
     Message.objects.create(name=name, email=email, content=content)

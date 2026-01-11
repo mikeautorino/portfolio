@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000
 
 # Application definition
 
@@ -129,10 +133,6 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Whether to perform MX/SMTP existence checks for submitted email addresses.
-# Disabled by default because SMTP probing is unreliable and can cause network errors.
-CHECK_EMAIL_EXISTENCE = False
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
