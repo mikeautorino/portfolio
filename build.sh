@@ -6,7 +6,7 @@ set -o errexit
 pip install -r requirements.txt
 
 # Convert static asset files
-python /portfolio/manage.py collectstatic --no-input
+python ./portfolio/manage.py collectstatic --no-input
 
 # Apply any outstanding database migrations
-python /portfolio/manage.py migrate
+python ./portfolio/manage.py migrate
