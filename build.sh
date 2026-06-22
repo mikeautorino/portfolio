@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
-# Exit on error
+# exit on error
 set -o errexit
 
-# Modify this line as needed for your package manager (pip, poetry, etc.)
+# Upgrade pip (optional, can help with dependency issues)
+pip install --upgrade pip
+
+# Install requirements
 pip install -r requirements.txt
 
-# Convert static asset files
-python manage.py collectstatic --no-input
-
-# Apply any outstanding database migrations
+# Apply database migrations
 python manage.py migrate
+
+# Create a Django superuser non-interactively, if environment variable is set
+if [ "$CREATE_SUPERUSER" = "True" ]; then
+  python manage.py createsuperuser --no-input
+fi
+
+# Collect static files
+python manage.py collectstatic --no-input
