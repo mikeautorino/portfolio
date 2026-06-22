@@ -11,6 +11,13 @@
     <h1>{{ post.title }}</h1>
     <p class="blog-post-date">Published on {{ post.published_at|date:"F j, Y" }}</p>
     
+    <!-- Add meta tags for SEO -->
+    <meta name="description" content="{{ post.description }}">
+    <meta property="og:title" content="{{ post.title }}">
+    <meta property="og:description" content="{{ post.description }}">
+    <meta property="og:image" content="{{ post.image.url }}">
+    <meta property="og:url" content="{% url 'blog_post' post.id %}">
+
     <div class="blog-post-body">
       {{ post.body|linebreaks }}
     </div>
@@ -18,3 +25,4 @@
 </div>
 
 {% endblock %}
+

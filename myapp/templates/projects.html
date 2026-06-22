@@ -10,6 +10,32 @@
       </div>
     </div>
   </section>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Explore my portfolio of projects.">
+  <meta name="keywords" content="projects, work, portfolio, web development, software engineering">
+  <meta name="robots" content="index, follow">
+
+  <!-- Structured Data for Projects -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Projects",
+      "itemListElement": [
+      {% for project in projects %}
+          {
+            "@type": "ListItem",
+            "position": {{ loop.index }},
+            "name": "{{ project.title }}",
+            "description": "{{ project.description }}",
+            "url": "{{ project.link }}"
+          }{% if not loop.last %},{% endif %}
+      {% endfor %}
+      ]
+    }
+  </script>
+
   <section class="projects-section reveal">
      <div class="grid">
       {% for project in projects %}
