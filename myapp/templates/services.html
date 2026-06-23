@@ -1,0 +1,67 @@
+<!-- src/main.py -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <section class="hero reveal">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <h1 class="hero-title">Services</h1>
+          <p class="hero-sub">I offer consulting and tutoring services</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="container content-bio ">
+      <h2>Software as a Service</h2>
+      <div class="bio-section card-body">
+      <p>I can provide consulting services to help you with your software development needs.</p>
+      <p>My experience comes from a range of various industries, such as game development, B2B, and e-commerce. </p>
+      <p>I am able to assist you in identifying the best approach for your projects</p>
+      </div>
+      </div>
+  </section>
+
+  <section class="reveal">
+      <div class="container content-bio ">
+        <h2>AI & Automation</h2>
+        <div class="bio-section card-body">
+          <p>I can provide automation services to help you with you business practices.</p>
+          <p>Automation tools, AI agents, fine-tunned llms and more can help you streamline your processes and increase efficiency.</p>
+          <p>I can create custom tools for you or show your team how to use AI tools effectively.</p>
+        </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="container content-bio ">
+      <h2>STEM Tutoring</h2>
+        <div class="bio-section card-body">
+          <p>I can provide tutoring services to help you with your child's STEM education.</p>
+          <p>My subjects include Computer Science, Mathematics, Physics and Chemestry.</p>
+          <p>I can help with homework, study sessions or by guiding them through difficult problems.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="container content-bio ">
+        <h2>Skating Lessons</h2>
+        <div class="bio-section card-body">
+          <p>I can provide skating lessons to help you with your child's skating skills.</p>
+          <p>My lessons are designed for all levels of skaters</p>
+          <p>I can teach basic skills or advanced techniques in rollerskating, skateboarding and ice skating.</p>
+        </div>
+      </div>
+  </section>
+
+  <div class="social-media-section reveal">
+    <h2>Inquire for more details.  First consultation is free.</h2>
+    <a href="{% url 'contact' %}" class="btn btn-ghost">Get In Touch</a>
+  </div>
+
+
+{% endblock %}
