@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 from django.core.cache import cache
 from django.contrib.auth.models import User
@@ -168,6 +168,7 @@ class ContactViewTest(TestCase):
         self.assertTemplateUsed(response, 'contact.html')
 
 
+@override_settings(RECAPTCHA_TESTING=True)
 class SubmitMessageViewTest(TestCase):
     """Test cases for the submit_message view"""
     
@@ -188,9 +189,9 @@ class SubmitMessageViewTest(TestCase):
             'message': 'This is a test message'
         })
         
-        # Should redirect to message_success
+        # Should redirect to contact with a success message
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('message_success'))
+        self.assertRedirects(response, reverse('contact'))
         
         # Message should be created in database
         self.assertEqual(Message.objects.count(), 1)
@@ -240,13 +241,26 @@ class SubmitMessageViewTest(TestCase):
         
         # No message should be created
         self.assertEqual(Message.objects.count(), 0)
+
+    def test_submit_message_missing_captcha(self):
+        """Test submitting message without a reCAPTCHA response"""
+        with self.settings(RECAPTCHA_TESTING=False):
+            response = self.client.post(reverse('submit_message'), {
+                'name': 'John Doe',
+                'email': 'john@example.com',
+                'message': 'This is a test message'
+            })
+
+        self.assertRedirects(response, reverse('contact'))
+        self.assertEqual(Message.objects.count(), 0)
     
     def test_submit_message_invalid_email_format(self):
         """Test submitting message with invalid email format"""
         response = self.client.post(reverse('submit_message'), {
             'name': 'John Doe',
             'email': 'not-a-valid-email',
-            'message': 'This is a test message'
+            'message': 'This is a test message',
+            'g-recaptcha-response': 'PASSED'
         })
         
         # Should redirect to contact
@@ -261,15 +275,17 @@ class SubmitMessageViewTest(TestCase):
         response1 = self.client.post(reverse('submit_message'), {
             'name': 'John Doe',
             'email': 'john@example.com',
-            'message': 'First message'
+            'message': 'First message',
+            'g-recaptcha-response': 'PASSED'
         })
-        self.assertRedirects(response1, reverse('message_success'))
+        self.assertRedirects(response1, reverse('contact'))
         
         # Second message immediately after should fail (rate limited)
         response2 = self.client.post(reverse('submit_message'), {
             'name': 'John Doe',
             'email': 'john@example.com',
-            'message': 'Second message'
+            'message': 'Second message',
+            'g-recaptcha-response': 'PASSED'
         })
         self.assertRedirects(response2, reverse('contact'))
         
@@ -286,11 +302,12 @@ class SubmitMessageViewTest(TestCase):
         response = self.client.post(reverse('submit_message'), {
             'name': 'John Doe',
             'email': 'john@example.com',
-            'content': 'This is a test using content field'
+            'content': 'This is a test using content field',
+            'g-recaptcha-response': 'PASSED'
         })
         
-        # Should succeed
-        self.assertRedirects(response, reverse('message_success'))
+        # Should succeed and redirect back to contact with a success message
+        self.assertRedirects(response, reverse('contact'))
         
         # Message should be created
         self.assertEqual(Message.objects.count(), 1)

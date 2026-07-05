@@ -4,6 +4,7 @@ from django.contrib import messages as django_messages
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.conf import settings
+from .forms import ContactForm
 from .models import Project, Message, BlogPost
 from .utils import is_valid_email_format
 
@@ -17,18 +18,24 @@ def projects(request):
     return render(request, 'projects.html', {'projects': all_projects})
 
 def contact(request):
-    return render(request, 'contact.html')
+    form = ContactForm()
+    return render(request, 'contact.html', {'form': form})
 
 
 @require_POST
 def submit_message(request):
-    name = request.POST.get('name', '').strip()
-    email = request.POST.get('email', '').strip()
-    # support form field named either 'message' or 'content'
-    content = request.POST.get('message', '').strip() or request.POST.get('content', '').strip()
-    if not (name and email and content):
-        django_messages.error(request, 'Please fill in all fields.')
+    post_data = request.POST.copy()
+    if not post_data.get('message') and post_data.get('content'):
+        post_data['message'] = post_data.get('content')
+
+    form = ContactForm(post_data)
+    if not form.is_valid():
+        django_messages.error(request, 'Please complete the form and verify the captcha.')
         return redirect('contact')
+
+    name = form.cleaned_data['name'].strip()
+    email = form.cleaned_data['email'].strip()
+    content = form.cleaned_data['message'].strip()
 
     # Rate limiting based on client IP
     ip = request.META.get('HTTP_X_FORWARDED_FOR', '').split(',')[0].strip() or request.META.get('REMOTE_ADDR')
@@ -83,8 +90,8 @@ def submit_message(request):
         # fail silently for email sending failures
         pass
 
-    django_messages.success(request, 'Your message has been sent. Thank you!')
-    return redirect('message_success')
+    django_messages.success(request, 'Thank you for your message. I will respond as soon as possible.')
+    return redirect('contact')
 
 def about(request):
     return render(request, 'about.html')

@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',') if os.getenv('ALLOWED_HOSTS') else []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else []
 
 
 # Application definition
@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
+    'django_recaptcha',
     'myapp',  # Add your custom app here
 ]
 
@@ -75,6 +77,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_SITE_KEY') or os.getenv('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_SERVER_KEY') or os.getenv('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_TESTING = os.getenv('RECAPTCHA_TESTING', 'False') == 'True'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
