@@ -163,7 +163,26 @@ class BlogPostViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, '<script>alert("xss")</script>')
-        self.assertContains(response, 'alert(&quot;xss&quot;)')
+        self.assertContains(response, 'alert("xss")')
+
+    def test_action_network_embed_is_rendered_as_html(self):
+        blog_post = BlogPost.objects.create(
+            title="Petition",
+            body=(
+                "<link href='https://actionnetwork.org/css/style-embed-v3.css' "
+                "rel='stylesheet' type='text/css' />"
+                "<script src='https://actionnetwork.org/widgets/v6/petition/"
+                "support-hofstra-faculty?format=js&source=widget'></script>"
+                "<div id='can-petition-area-support-hofstra-faculty' "
+                "style='width: 100%'></div>"
+            ),
+        )
+
+        response = self.client.get(reverse('blog_post', args=[blog_post.id]))
+
+        self.assertContains(response, 'href="https://actionnetwork.org/css/style-embed-v3.css"')
+        self.assertContains(response, 'src="https://actionnetwork.org/widgets/v6/petition/support-hofstra-faculty?format=js&amp;source=widget"')
+        self.assertContains(response, 'id="can-petition-area-support-hofstra-faculty"')
 
 
 class ProjectsViewTest(TestCase):
