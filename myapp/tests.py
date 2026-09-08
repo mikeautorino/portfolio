@@ -103,8 +103,22 @@ class BlogPostModelTest(TestCase):
         blog_post = BlogPost.objects.create(title="Petition", body=embed)
 
         self.assertIn('href="https://actionnetwork.org/css/style-embed-v3.css"', blog_post.body)
+        self.assertIn('rel="stylesheet"', blog_post.body)
+        self.assertIn('type="text/css"', blog_post.body)
         self.assertIn('src="https://actionnetwork.org/widgets/v6/petition/support-hofstra-faculty?format=js&amp;source=widget"', blog_post.body)
         self.assertIn('id="can-petition-area-support-hofstra-faculty"', blog_post.body)
+        self.assertIn('style="width: 100%;"', blog_post.body)
+
+    def test_blog_post_linebreaks_are_rendered(self):
+        blog_post = BlogPost.objects.create(
+            title="Line Breaks",
+            body="First paragraph\n\nSecond paragraph",
+        )
+
+        response = self.client.get(reverse('blog_post', args=[blog_post.id]))
+
+        self.assertContains(response, '<p>First paragraph</p>')
+        self.assertContains(response, '<p>Second paragraph</p>')
 
     def test_unapproved_embed_attributes_are_removed(self):
         blog_post = BlogPost.objects.create(
@@ -181,8 +195,11 @@ class BlogPostViewTest(TestCase):
         response = self.client.get(reverse('blog_post', args=[blog_post.id]))
 
         self.assertContains(response, 'href="https://actionnetwork.org/css/style-embed-v3.css"')
+        self.assertContains(response, 'rel="stylesheet"')
+        self.assertContains(response, 'type="text/css"')
         self.assertContains(response, 'src="https://actionnetwork.org/widgets/v6/petition/support-hofstra-faculty?format=js&amp;source=widget"')
         self.assertContains(response, 'id="can-petition-area-support-hofstra-faculty"')
+        self.assertContains(response, 'style="width: 100%;"')
 
 
 class ProjectsViewTest(TestCase):

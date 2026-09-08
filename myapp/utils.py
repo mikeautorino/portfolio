@@ -1,4 +1,5 @@
 import bleach
+from bleach.css_sanitizer import CSSSanitizer
 from bleach.html5lib_shim import Filter
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
@@ -9,7 +10,11 @@ ALLOWED_BLOG_TAGS = ['link', 'script', 'div']
 
 def _allowed_blog_attribute(tag: str, name: str, value: str) -> bool:
     if tag == 'link':
-        return name == 'href' and value == 'https://actionnetwork.org/css/style-embed-v3.css'
+        return (
+            (name == 'href' and value == 'https://actionnetwork.org/css/style-embed-v3.css')
+            or (name == 'rel' and value == 'stylesheet')
+            or (name == 'type' and value == 'text/css')
+        )
 
     if tag == 'script':
         return (
@@ -56,6 +61,7 @@ def sanitize_blog_body(body: str) -> str:
         attributes=_allowed_blog_attribute,
         protocols=['https'],
         strip=True,
+        css_sanitizer=CSSSanitizer(allowed_css_properties={'width'}),
         filters=[_ActionNetworkScriptFilter],
     )
     return cleaner.clean(body)

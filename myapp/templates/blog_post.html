@@ -18,7 +18,7 @@
     <meta property="og:url" content="{% url 'blog_post' post.id %}">
 
     <div class="blog-post-body">
-      {{ post.body|safe }}
+      {{ post.body|safe|linebreaks }}
     </div>
   </article>
 </div>
