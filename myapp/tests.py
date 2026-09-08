@@ -1,7 +1,9 @@
+from datetime import datetime, timezone as dt_timezone
 from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 from django.core.cache import cache
 from django.contrib.auth.models import User
+from django.utils import timezone
 from .models import Project, Message, BlogPost
 import time
 
@@ -164,6 +166,26 @@ class HomeViewTest(TestCase):
         self.assertIn('blog_posts', response.context)
         self.assertEqual(len(response.context['blog_posts']), 1)
         self.assertEqual(response.context['blog_posts'][0].title, "Test Post")
+
+    def test_home_view_orders_blog_posts_most_recent_first(self):
+        older_post = BlogPost.objects.create(title="Older Post", body="Older content")
+        newer_post = BlogPost.objects.create(title="Newer Post", body="Newer content")
+        BlogPost.objects.filter(id=older_post.id).update(
+            published_at=datetime(2024, 1, 1, tzinfo=dt_timezone.utc)
+        )
+        BlogPost.objects.filter(id=newer_post.id).update(
+            published_at=datetime(2025, 1, 1, tzinfo=dt_timezone.utc)
+        )
+        BlogPost.objects.filter(id=self.blog_post.id).update(
+            published_at=datetime(2023, 1, 1, tzinfo=dt_timezone.utc)
+        )
+
+        response = self.client.get(reverse('home'))
+
+        self.assertEqual(
+            list(response.context['blog_posts'].values_list('title', flat=True)),
+            ['Newer Post', 'Older Post', 'Test Post'],
+        )
 
 
 class BlogPostViewTest(TestCase):

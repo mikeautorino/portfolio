@@ -10,7 +10,7 @@ from .utils import is_valid_email_format
 
 # Create your views here.
 def home(request):
-    all_blog_posts = BlogPost.objects.all()
+    all_blog_posts = BlogPost.objects.order_by('-published_at')
     return render(request, 'home.html', {'blog_posts': all_blog_posts})
 
 def projects(request):
