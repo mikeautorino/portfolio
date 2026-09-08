@@ -81,6 +81,38 @@ class BlogPostModelTest(TestCase):
         """Test that a blog post can be created"""
         self.assertEqual(self.blog_post.title, "Test Blog Post")
         self.assertEqual(self.blog_post.body, "This is a test blog post content")
+
+    def test_blog_post_body_is_sanitized_on_save(self):
+        blog_post = BlogPost.objects.create(
+            title="Unsafe Post",
+            body='<script>alert("xss")</script><strong>content</strong>',
+        )
+
+        self.assertEqual(blog_post.body, 'alert("xss")content')
+
+    def test_action_network_embed_is_preserved(self):
+        embed = (
+            "<link href='https://actionnetwork.org/css/style-embed-v3.css' "
+            "rel='stylesheet' type='text/css' />"
+            "<script src='https://actionnetwork.org/widgets/v6/petition/"
+            "support-hofstra-faculty?format=js&source=widget'></script>"
+            "<div id='can-petition-area-support-hofstra-faculty' "
+            "style='width: 100%'></div>"
+        )
+
+        blog_post = BlogPost.objects.create(title="Petition", body=embed)
+
+        self.assertIn('href="https://actionnetwork.org/css/style-embed-v3.css"', blog_post.body)
+        self.assertIn('src="https://actionnetwork.org/widgets/v6/petition/support-hofstra-faculty?format=js&amp;source=widget"', blog_post.body)
+        self.assertIn('id="can-petition-area-support-hofstra-faculty"', blog_post.body)
+
+    def test_unapproved_embed_attributes_are_removed(self):
+        blog_post = BlogPost.objects.create(
+            title="Unsafe Embed",
+            body='<script src="https://evil.example/script.js"></script>',
+        )
+
+        self.assertEqual(blog_post.body, '')
     
     def test_blog_post_str_method(self):
         """Test the __str__ method returns the title"""
@@ -118,6 +150,20 @@ class HomeViewTest(TestCase):
         self.assertIn('blog_posts', response.context)
         self.assertEqual(len(response.context['blog_posts']), 1)
         self.assertEqual(response.context['blog_posts'][0].title, "Test Post")
+
+
+class BlogPostViewTest(TestCase):
+    def test_blog_post_body_is_not_rendered_as_html(self):
+        blog_post = BlogPost.objects.create(
+            title="Unsafe Post",
+            body='<script>alert("xss")</script>',
+        )
+
+        response = self.client.get(reverse('blog_post', args=[blog_post.id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, '<script>alert("xss")</script>')
+        self.assertContains(response, 'alert(&quot;xss&quot;)')
 
 
 class ProjectsViewTest(TestCase):
